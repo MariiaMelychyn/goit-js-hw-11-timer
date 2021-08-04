@@ -5,50 +5,51 @@ const refs = {
     mins: document.querySelector('[data-value="mins"]'),
     secs: document.querySelector('[data-value="secs"]'),
 }
-const INTERVAL_DELAY = 1000;
-class CountdownTimer {
-    constructor({selector, targetDate}){
+
+
+class Timer {
+    constructor({ selector, targetDate }) {
         this.selector = selector;
         this.targetDate = targetDate;
+
+        this.refs = {
+            timerBox: document.querySelector('#timer-1'),
+            daysTimer: document.querySelector(`${selector} span[data-value="days"]`),
+            hoursTimer: document.querySelector(`${selector} span[data-value="hours"]`),
+            minutesTimer: document.querySelector(`${selector} span[data-value="mins"]`),
+            secondsTimer: document.querySelector(`${selector} span[data-value="secs"]`),
+        };
+        this.start();
     }
-    interval = setInterval(() =>{
-        const date = date.now();
-        const timerDate = this.targetDate - date;
-        changeTime(timerDate);
-        stopText(timerDate);
-    },INTERVAL_DELAY);
+
+    start() {
+        setInterval(() => {
+            const deltaTime = this.targetDate - Date.now();
+            this.updateClockface(this.getTimeComponents(deltaTime));
+        }, 1000);
+    }
+
+    
+    updateClockface({ days, hours, mins, secs }) {
+    this.refs.daysTimer.innerHTML = days;
+    this.refs.hoursTimer.innerHTML = hours;
+    this.refs.minutesTimer.innerHTML = mins;
+    this.refs.secondsTimer.innerHTML = secs;
 }
+    
+    getTimeComponents(time) {
+        const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+        const hours = pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+        const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+        const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
 
-function pad(value){
-    return String(value).padStart(2, "0");
-}
-function changeTime(time){
-    const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
-    const hours = pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-    const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-    const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
-
-    refs.days.textContent = `$(days)`;
-    refs.hours.textContent = `$(hours)`;
-    refs.mins.textContent = `$(mins)`;
-    refs.secs.textContent = `$(secs)`;
-}
-
-
-function stop(time) {
-    if(time < 0) {
-        refs.timer.textContent = 'The time of the action has come out!';
-        refs.timer.style.fontFamily =  "sans-serif";
-        refs.timer.style.color = "red";
-        refs.timer.style.fontWeight = "700";
-        refs.timer.style.fontSize = "40px";
-        refs.timer.style.letterSpacing = "0.05em";
-        refs.timer.style.marginTop = "100px";
-        refs.timer.style.textAlign = "center";
+        return { days, hours, mins, secs };
     }
 }
-
-new CountdownTimer({
+    function pad(value) {
+        return String(value).padStart(2, '0');
+}
+const CountDownTimer = new Timer({
     selector: '#timer-1',
-    targetDate: new Date('August 15, 2021'),
-  });
+    targetDate: new Date('August 17, 2021'),
+});
