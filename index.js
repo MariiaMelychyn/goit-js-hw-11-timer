@@ -35,4 +35,20 @@ function changeTime(time){
 }
 
 
+function stop(time) {
+    if(time < 0) {
+        refs.timer.textContent = 'The time of the action has come out!';
+        refs.timer.style.fontFamily =  "sans-serif";
+        refs.timer.style.color = "red";
+        refs.timer.style.fontWeight = "700";
+        refs.timer.style.fontSize = "40px";
+        refs.timer.style.letterSpacing = "0.05em";
+        refs.timer.style.marginTop = "100px";
+        refs.timer.style.textAlign = "center";
+    }
+}
 
+new CountdownTimer({
+    selector: '#timer-1',
+    targetDate: new Date('August 15, 2021'),
+  });
